@@ -161,7 +161,7 @@ class Nussinov:
         if self.trace is None:
             self.backtrace()
         
-        result = ['-' for _ in range(len(self.s))] # gapped sequence
+        result = ['.' for _ in range(len(self.s))] # gapped sequence
         for node in self.trace:
             if not node.match:
                 continue
@@ -170,7 +170,7 @@ class Nussinov:
             result[j] = ')'
             
         # the raw string
-        result = ' '.join(result)
+        result = ''.join(result)
         if not prettify:
             return result
         
