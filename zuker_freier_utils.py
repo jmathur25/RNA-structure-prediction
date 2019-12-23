@@ -5,8 +5,6 @@ M_const = 4.6
 Qi_const = 0.4
 m_const = 3
 
-import numpy
-
 def FreierDangleLeft(sequence, x, a, b):
     five_prime = {"A":{"A":-0.3, "C":-0.5, "G":-0.2,"U":-0.3},
                   "C":{"A":-0.3, "C":-0.2, "G":-0.3,"U":-0.2},
@@ -48,9 +46,10 @@ def FreierStack(sequence, i, j):
         return scores[sequence[i + 1]][sequence[j - 1]]
     return 0
 
-def FreierIS1(sequence, i,j):
+def FreierIS1(i,j):
+    global m_const
     length = j - i - 1
-    if length < m :
+    if length < m_const:
         return float('inf')
     values = {3 : 7.4, 4 : 5.9, 5 : 4.4, 6 : 4.3, 7 : 4.1, 8 : 4.1, 9 : 4.2, 10 : 4.3, 12 : 4.9, 14 : 5.6, 16 : 6.1, 18 : 6.7, 20: 7.1, 25 : 8.1, 30 : 8.9}
     if length in values :
@@ -63,12 +62,12 @@ def FreierIS2(sequence, i, j, k, l) :
     if k - 1 == i and l + 1 == j:
         is2 = FreierStack(sequence, k, l)
     if k - 1 == i and l + 1 < j or k - 1 > i and l + 1 == j:
-        is2 = FreierBulge(sequence, l - k - 1)
+        is2 = FreierBulge(l - k - 1)
     else:
-        is2 = FreierInternalLoop(sequence, l - k - 1)
+        is2 = FreierInternalLoop(l - k - 1)
     return is2
 
-def FreierBulge(sequence, length):
+def FreierBulge(length):
     if length < 1:
         return float('inf')
     values = {1 : 3.3, 2 : 5.2, 3 : 6.0, 4 : 6.7, 5 : 7.4, 6 : 8.2, 7 : 9.1, 8 : 10.0, 9 : 3.1, 10 : 3.6, 12 : 4.4, 14 : 5.1, 16 : 5.6, 18 : 6.2, 20: 6.6, 25 : 7.6, 30 : 8.4}
@@ -77,7 +76,7 @@ def FreierBulge(sequence, length):
     else :
         return round(4.3834 * numpy.log(length) + 0.8927, 1)
 
-def FreierInternalLoop(sequence, length):
+def FreierInternalLoop(length):
     if length < 2 :
         return float('inf')
     values = {2 : 0.8, 3 : 1.3, 4 : 1.7, 5 : 2.1, 6 : 2.5, 7 : 2.6, 8 : 2.8, 9 : 3.1, 10 : 3.6, 12 : 4.4, 14 : 5.1, 16 : 5.6, 18 : 6.2, 20: 6.6, 25 : 7.6, 30 : 8.4}
@@ -93,7 +92,6 @@ def FreierPair(sequence, i, j):
     elif sequence[i] == 'G' and sequence[j] == 'C' or sequence[i] == 'C' and sequence[j] == 'G' :
         p = -6.17
     else :
-        p = float('inf')
-    return p + FreierStack(sequence, i, j)
-
-
+        p = 1
+    return p
+    

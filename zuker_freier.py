@@ -34,7 +34,7 @@ class ZukerFreier:
             
             if need_bar:
                 count += 1
-                if count % 10 == 0:
+                if count % 100 == 0:
                     pbar.update(count - prev)
                     prev = count
 
@@ -52,8 +52,6 @@ class ZukerFreier:
         
     def _wx(self, i, j):
         if (j - i < m_const) :
-            self.W[i][j] = 0
-            self.TB[i][j] = 0
             return 0
     
         if self.W[i][j] != "-":
@@ -72,10 +70,9 @@ class ZukerFreier:
         return self.W[i][j]
     
     def _vx(self, i,j):
-        if(FreierPair(i,j) == float('inf')):
+        if (FreierPair(self.s, i,j) == float('inf')):
             return float('inf')
         if(j - i < m_const) :
-            self.V[i][j] = float('inf')
             return float('inf')
         if self.V[i][j] != "-":
             return self.V[i][j]
@@ -95,7 +92,6 @@ class ZukerFreier:
     
     def _wxi(self, i, j):
         if(j - i < m_const) :
-            self.Wi[i][j] = 0
             return 0
         if self.Wi[i][j] != "-":
             return self.Wi[i][j]
@@ -111,7 +107,7 @@ class ZukerFreier:
         return self.Wi[i][j]
 
     def _optimal_IS2(self, i, j):
-        if(FreierPair(i,j) == float('inf')):
+        if(FreierPair(self.s, i,j) == float('inf')):
             return float('inf')
         minimum = float('inf')
         for k in range(i + 1, j - 1):
