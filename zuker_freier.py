@@ -72,6 +72,8 @@ class ZukerFreier:
         return self.W[i][j]
     
     def _vx(self, i,j):
+        if(FreierPair(i,j) == float('inf')):
+            return float('inf')
         if(j - i < m_const) :
             self.V[i][j] = float('inf')
             return float('inf')
@@ -101,14 +103,16 @@ class ZukerFreier:
         possibilities = [FreierPair(self.s, i,j) + self._vx(i,j), FreierDangleLeft(self.s, i, i+1, j-1) + FreierDangleRight(self.s, j, i+1, j-1) + FreierPair(self.s, i + 1,j - 1) + self._vx(i+1,j-1),
                          FreierDangleLeft(self.s, i, i+1, j) + FreierPair(self.s, i + 1,j) + self._vx(i+1,j), FreierDangleRight(self.s, j, i, j-1) + FreierPair(self.s, i,j - 1) + self._vx(i,j-1),
                         Qi_const + self._wxi(i + 1,j), Qi_const + self._wxi(i,j - 1), min_k[0]]
-        self.W[i][j] = min(possibilities)
-        self.TB[i][j] = possibilities.index(self.W[i][j])
+        self.Wi[i][j] = min(possibilities)
+        self.TB[i][j] = possibilities.index(self.Wi[i][j])
         if(self.TB[i][j]) == 6:
             self.TB[i][j] = min_k[1] * -1
-        self.W[i][j] = round(self.W[i][j], 1)
-        return self.W[i][j]
+        self.Wi[i][j] = round(self.Wi[i][j], 1)
+        return self.Wi[i][j]
 
     def _optimal_IS2(self, i, j):
+        if(FreierPair(i,j) == float('inf')):
+            return float('inf')
         minimum = float('inf')
         for k in range(i + 1, j - 1):
             for l in range (k + 1, j):
